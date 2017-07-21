@@ -1,4 +1,5 @@
 ﻿
+
 /*==============================================================*/
 /* Table: CODIGOS                                               */
 /*==============================================================*/
@@ -70,6 +71,8 @@ create table ENTIDAD (
    PIN                  TEXT                 null,
    ESTADO               BOOL                 null,
    TIPO                 CHAR(2)              null,
+   "USER"               TEXT                 null,
+   PWD                  TEXT                 null,
    constraint PK_ENTIDAD primary key (ID)
 );
 
