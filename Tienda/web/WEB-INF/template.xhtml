@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <link rel="shortcut icon" href="#{request.contextPath}/resources/images/consultoria.png" type="image/jpg" />
+        </f:facet>
+        <title>Sistema de Ventas</title>
+
+        <h:outputScript name="js/layout.js" library="volt-layout" />
+
+        <ui:insert name="head" />
+    </h:head>
+
+    <h:body styleClass="BlueBody">
+        <p:growl id="growl" showDetail="true" widgetVar="growl"  globalOnly="false" life="3000" autoUpdate="true"/>
+        <header>
+            <div class="Container100">
+                <h:graphicImage name="sistema.png" library="images" width="100%" height="110" styleClass="BordRad10"/>
+            </div> 
+            <div class="MarTop20 " style="position: absolute;left: 20px;">
+                <b><font color="white" class="Fs40" face="serif">Tienda On-Line</font></b><br/>
+                <font style="text-shadow: white 0.2em 0.2em 0.1em" color="white">Sistema de Ventas</font>
+            </div>
+        </header>
+
+        <!--<p:growl id="growl" showDetail="true" widgetVar="growl" globalOnly="false" life="3000" autoUpdate="true"/>-->
+        <ui:insert name="content"/>
+        <h:outputStylesheet name="css/core-layout.css" library="volt-layout" />
+        <h:outputStylesheet name="css/animate.css" library="volt-layout" />
+        <h:outputStylesheet name="css/volt-font.css" library="volt-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="volt-layout" />
+        <h:outputStylesheet name="css/volt-layout.css" library="volt-layout" />
+        <h:outputStylesheet name="css/img-style.css" library="sistema" />
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajax-loader.gif" />
+        </p:dialog>
+    </h:body>
+</html>

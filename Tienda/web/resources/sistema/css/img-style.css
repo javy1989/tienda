@@ -1,0 +1,56 @@
+.img-move{
+    height: 180px;
+    width: 180px;
+    margin: 15px 0;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+}
+ 
+.img-move:hover{
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2)
+}
+
+.title{
+    font-size: 1.5em;
+    position: relative;
+    margin: 0 auto 1em;
+    padding: 1em 1em .25em 1em;
+    text-align: center;
+    text-transform:  uppercase;
+}
+
+.title:after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 240px;
+  height: 4px;
+  margin-left: -120px;
+  content: '';
+  background-color: #fff;
+}
+
+
+tr.group,
+tr.group:hover {
+    background-color: #ddd !important;
+}
+
+
+.progressverde .ui-progressbar-value {    
+    background: #00b713 !important;    
+}
+
+.progresstomate .ui-progressbar-value {    
+    background: orange !important; 
+}
+
+
+.progressrojo .ui-progressbar-value {    
+    background: red !important;
+}

@@ -1,0 +1,35 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/template.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="Container100">
+                <div class="Container100">
+                    <div class="Wid30 OvHidden DispBlock MarAuto WidAutoOnMobile" style="margin-top:2%;">
+                        <div class="Card ShadowEffect">
+                            <div class="Container100">
+                                <div class="Card OrangeBack White TexAlCenter Fs20 FontVoltBold">Ingreso al Sistema</div>
+                            </div>
+                            <div class="Container100 Responsive100">
+                                <div class="Card TexAlCenter">
+                                    <i class="icon-unlocked2 Fs60 TealGreen"></i>
+                                    <div class="EmptyBox10"></div>
+                                    <p:inputText styleClass="Wid90" placeholder="User" required="true" requiredMessage="Ingrese usuario"/>
+                                    <div class="EmptyBox10"></div>
+                                    <p:password styleClass="Wid90" placeholder="Password" required="true" requiredMessage="Ingrese contrasenia"/>
+                                    <div class="Separator"></div>
+                                    <p:commandButton value="Log In" icon="fa fa-unlock" styleClass="GreenButton"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
