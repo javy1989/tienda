@@ -1,0 +1,42 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pv="http://primefaces.org/volt">
+
+    <h:form id="menuform">
+        <pv:menu id="menu" rendered="#{menuControlador.ingreso==true or menuControlador.ingresoAdm==true}">
+            <p:submenu id="rm_alum" label="Alumnos" icon="icon-leaf" rendered="#{menuControlador.hasRole('est')}">
+                <p:menuitem id="rm_clf" value="Clima Familiar" icon="icon-leaf" url="/paginas/educacion/alumno/inicio-tcfso.jsf" disabled="#{!testTadiControler.process}"/>
+                <p:menuitem id="rm_cne" value="Conociendo Emociones" icon="icon-leaf" url="/paginas/educacion/alumno/inicio-tcemo.jsf" disabled="#{!testTadiControler.process}"/>
+                <p:menuitem id="rm_app" value="Aptitudes" icon="icon-leaf" outcome="/paginas/educacion/alumno/inicio-tadi" disabled="#{!testTadiControler.process}"/>
+            </p:submenu>
+            <p:submenu id="rm_rpt" label="Representante" icon="icon-select" rendered="#{menuControlador.hasRole('rpt')}">
+                <p:menuitem id="rm_left" value="Satisfacción" icon="icon-uniE675" url="/paginas/educacion/representante/inicio-tsap.jsf" update="growl"/>
+            </p:submenu>
+            <p:submenu id="rm_doc" label="Docente" icon="icon-lab" rendered="#{menuControlador.hasRole('dct')}">
+                <p:menuitem id="rm_bg_blue" url="#" value="Pma" icon="icon-syringe"/>
+            </p:submenu>
+            <p:submenu id="rm_adm" label="Administrador" icon="icon-meter" rendered="#{menuControlador.hasRoleAdm('ADMIN')}">
+                <p:menuitem id="rm_sample" value="Crear Test" icon="fa fa-columns" url="/paginas/sistema/psicologo/lista-test.jsf"/>
+                <p:menuitem id="rm_forms" value="Pregunta" icon="icon-document-text" url="/paginas/sistema/administrador/pregunta.jsf" />
+                <p:menuitem id="rm_data" value="Data Components" icon="icon-cube"  />
+                <p:menuitem id="rm_datatable" value="DataTable" icon="icon-news"  />
+                <p:menuitem id="rm_panels" value="Panels" icon="icon-window"/> 
+                <p:menuitem id="rm_overlays" value="Overlays" icon="icon-windows"/>
+                <p:menuitem id="rm_menus" value="Menus" icon="icon-uniE675"/>
+                <p:menuitem id="rm_messages" value="Messages" icon="icon-messages"/>
+                <p:menuitem id="rm_charts" value="Charts" icon="icon-connection-50"/>
+                <p:menuitem id="rm_fileupload" value="FileUpload" icon="icon-upload"/>
+                <p:menuitem id="rm_misc" value="Misc" icon="icon-pill"/>
+            </p:submenu>
+            <p:submenu id="rm_psico" label="Psicologo" icon="icon-meter" rendered="#{menuControlador.hasRoleAdm('PSICO')}">
+                <p:menuitem id="rm_sample1" value="Crear Test" icon="fa fa-columns" url="/paginas/sistema/psicologo/lista-test.jsf" />
+                <p:menuitem id="rm_forms1" value="Revisar Test" icon="icon-document-text"  />
+            </p:submenu>
+        </pv:menu>
+    </h:form>
+
+</ui:composition>

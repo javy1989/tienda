@@ -44,7 +44,7 @@ public class IngresoSistemaBean {
             Mensajes.informacion("Usuario no tiene asignado perfil");
             return null;
         }
-        return null;
+        return "/sistema/blanco.xhtml?faces-redirect=true";
     }
     
     public DatosLogueoBean getSeguridad() {

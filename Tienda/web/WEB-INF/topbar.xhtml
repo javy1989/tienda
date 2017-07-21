@@ -1,0 +1,37 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <!-- TOPBAR START -->    
+    <div id="layout-topbar">
+        <div id="layout-topbar-indent">
+            <a id="menu-button"><i class="icon-th-menu"></i></a>
+            <a href="dashboard.xhtml"><h:graphicImage name="prolipa.jpg" id="logo" library="images" /></a>
+            
+            <span class="DispInlBlock Fright" style="margin:10px 10px 0px 0px;" id="toprightmenu">
+                <h:form styleClass="DispInline">
+                    <p:splitButton value="Acciones" icon="ui-icon-check fa fa-power-off" styleClass="White Fs14" appendTo="@this">
+                        <p:menuitem value="#{datoLogueo}" icon="fa fa-user" ajax="false" />                        
+                        <p:separator />
+                        <p:menuitem value="SalirN" icon="fa fa-lock"/>
+                    </p:splitButton>
+                </h:form>
+            </span>
+        </div>
+    </div>
+    <!-- TOPBAR END -->
+    
+    <!-- TOPMENU START -->
+    <ul id="top-menu" class="Responsive100  ">
+        <li style="float:left; border:none;">
+            <a href="#"><i class="icon-vcard Opac80"></i><span><span class="Fs16">Usuario Conectado</span> <br/> <span class="Opac50 Fs12"><h:outputLabel value="#{homeControlador.nombre}"/></span></span></a>
+        </li>
+        
+    </ul>
+    <!-- TOPMENU END -->
+    
+</ui:composition>
