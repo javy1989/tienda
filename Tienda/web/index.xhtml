@@ -18,11 +18,11 @@
                                 <div class="Card TexAlCenter">
                                     <i class="icon-unlocked2 Fs60 TealGreen"></i>
                                     <div class="EmptyBox10"></div>
-                                    <p:inputText styleClass="Wid90" placeholder="User" required="true" requiredMessage="Ingrese usuario" />
+                                    <p:inputText styleClass="Wid90" placeholder="User" required="true" requiredMessage="Ingrese usuario" value="#{ingreso.usr}"/>
                                     <div class="EmptyBox10"></div>
-                                    <p:password styleClass="Wid90" placeholder="Password" required="true" requiredMessage="Ingrese contrasenia"/>
+                                    <p:password styleClass="Wid90" placeholder="Password" required="true" requiredMessage="Ingrese contrasenia" value="#{ingreso.pwd}"/>
                                     <div class="Separator"></div>
-                                    <p:commandButton value="Log In" icon="fa fa-unlock" styleClass="GreenButton"/>
+                                    <p:commandButton value="Log In" icon="fa fa-unlock" styleClass="GreenButton" action="#{ingreso.login()}"/>
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@
  */
 package com.tienda.servicios;
 
-import com.tienda.modelo.Factura;
+import com.tienda.modelo.Log;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author ricardo
  */
 @Stateless
-public class FacturaFacade extends AbstractFacade<Factura> {
+public class LogFacade extends AbstractFacade<Log> {
 
     @PersistenceContext(unitName = "TiendaPU")
     private EntityManager em;
@@ -25,8 +25,8 @@ public class FacturaFacade extends AbstractFacade<Factura> {
         return em;
     }
 
-    public FacturaFacade() {
-        super(Factura.class);
+    public LogFacade() {
+        super(Log.class);
     }
     
 }

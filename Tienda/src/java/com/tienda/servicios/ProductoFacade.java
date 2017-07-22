@@ -5,7 +5,11 @@
  */
 package com.tienda.servicios;
 
-import com.tienda.modelo.Maestro;
+import com.tienda.excepcions.ConsultarException;
+import com.tienda.modelo.Producto;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +19,7 @@ import javax.persistence.PersistenceContext;
  * @author ricardo
  */
 @Stateless
-public class MaestroFacade extends AbstractFacade<Maestro> {
+public class ProductoFacade extends AbstractFacade<Producto> {
 
     @PersistenceContext(unitName = "TiendaPU")
     private EntityManager em;
@@ -25,8 +29,14 @@ public class MaestroFacade extends AbstractFacade<Maestro> {
         return em;
     }
 
-    public MaestroFacade() {
-        super(Maestro.class);
+    public ProductoFacade() {
+        super(Producto.class);
     }
-    
+
+    public List<Producto> traeProductos() throws ConsultarException {
+        Map parametros=new HashMap();
+        parametros.put(";where", "o.estado=true");
+        parametros.put(";orden", "o.descripcion");
+        return  encontarParametros(parametros);
+    }
 }

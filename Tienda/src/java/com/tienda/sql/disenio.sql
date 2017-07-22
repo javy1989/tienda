@@ -1,151 +1,72 @@
 ﻿
-
 /*==============================================================*/
-/* Table: CODIGOS                                               */
+/* Table: LOG                                                   */
 /*==============================================================*/
-create table CODIGOS (
+create table LOG (
    ID                   SERIAL               not null,
-   MAESTRO              INT4                 null,
-   NOMBRE               TEXT                 null,
-   CODIGO               TEXT                 null,
-   DESCRIPCION          TEXT                 null,
-   PARAMETROS           TEXT                 null,
-   ESTADO               BOOL                 null,
-   constraint PK_CODIGOS primary key (ID)
-);
-
-/*==============================================================*/
-/* Index: CODIGOS_PK                                            */
-/*==============================================================*/
-create unique index CODIGOS_PK on CODIGOS (
-ID
-);
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_3_FK                                     */
-/*==============================================================*/
-create  index RELATIONSHIP_3_FK on CODIGOS (
-MAESTRO
-);
-
-/*==============================================================*/
-/* Table: DETALLEFACTURA                                        */
-/*==============================================================*/
-create table DETALLEFACTURA (
-   ID                   SERIAL               not null,
-   FACTURA              INT4                 null,
-   PRODUCTO             INT4                 null,
-   CANTIDAD             INT4                 null,
-   constraint PK_DETALLEFACTURA primary key (ID)
-);
-
-/*==============================================================*/
-/* Index: DETALLEFACTURA_PK                                     */
-/*==============================================================*/
-create unique index DETALLEFACTURA_PK on DETALLEFACTURA (
-ID
-);
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_5_FK                                     */
-/*==============================================================*/
-create  index RELATIONSHIP_5_FK on DETALLEFACTURA (
-FACTURA
-);
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_7_FK                                     */
-/*==============================================================*/
-create  index RELATIONSHIP_7_FK on DETALLEFACTURA (
-PRODUCTO
-);
-
-/*==============================================================*/
-/* Table: ENTIDAD                                               */
-/*==============================================================*/
-create table ENTIDAD (
-   ID                   SERIAL               not null,
-   RAZON_SOCIAL         TEXT                 null,
-   REPRESENTANTE        TEXT                 null,
-   CORREO               TEXT                 null,
-   PIN                  TEXT                 null,
-   ESTADO               BOOL                 null,
-   TIPO                 CHAR(2)              null,
-   "USER"               TEXT                 null,
-   PWD                  TEXT                 null,
-   constraint PK_ENTIDAD primary key (ID)
-);
-
-/*==============================================================*/
-/* Index: ENTIDAD_PK                                            */
-/*==============================================================*/
-create unique index ENTIDAD_PK on ENTIDAD (
-ID
-);
-
-/*==============================================================*/
-/* Table: FACTURA                                               */
-/*==============================================================*/
-create table FACTURA (
-   IDF                  SERIAL               not null,
-   CLIENTE              INT4                 null,
-   NUMERO               TEXT                 null,
-   SUBTOTAL             DECIMAL(10,6)        null,
-   IVA                  DECIMAL(2,2)         null,
-   VALOR_IVA            DECIMAL(6,4)         null,
-   TOTAL                DECIMAL(6,4)         null,
+   ENTIDAD              TEXT                 null,
    FECHA                DATE                 null,
-   USUARIO              TEXT                 null,
-   constraint PK_FACTURA primary key (IDF)
+   VALOR                TEXT                 null,
+   USUARIO              VARCHAR(10)          null,
+   constraint PK_LOG primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: FACTURA_PK                                            */
+/* Index: LOG_PK                                                */
 /*==============================================================*/
-create unique index FACTURA_PK on FACTURA (
-IDF
-);
-
-/*==============================================================*/
-/* Index: RELATIONSHIP_6_FK                                     */
-/*==============================================================*/
-create  index RELATIONSHIP_6_FK on FACTURA (
-CLIENTE
-);
-
-/*==============================================================*/
-/* Table: GRUPOUSUARIO                                          */
-/*==============================================================*/
-create table GRUPOUSUARIO (
-   ID                   SERIAL               not null,
-   USUARIO              TEXT                 null,
-   TIPO                 CHAR(2)              null,
-   ESTADO               BOOL                 null,
-   constraint PK_GRUPOUSUARIO primary key (ID)
-);
-
-/*==============================================================*/
-/* Index: GRUPOUSUARIO_PK                                       */
-/*==============================================================*/
-create unique index GRUPOUSUARIO_PK on GRUPOUSUARIO (
+create unique index LOG_PK on LOG (
 ID
 );
 
 /*==============================================================*/
-/* Table: MAESTRO                                               */
+/* Table: PRODUCTO                                              */
 /*==============================================================*/
-create table MAESTRO (
+create table PRODUCTO (
    ID                   SERIAL               not null,
+   TIPO                 INT4                 null,
+   DESCRIPCION          TEXT                 null,
    CODIGO               TEXT                 null,
-   NOMBRE               TEXT                 null,
-   constraint PK_MAESTRO primary key (ID)
+   ESTADO               BOOL                 null,
+   constraint PK_PRODUCTO primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: MAESTRO_PK                                            */
+/* Index: PRODUCTO_PK                                           */
 /*==============================================================*/
-create unique index MAESTRO_PK on MAESTRO (
+create unique index PRODUCTO_PK on PRODUCTO (
 ID
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_2_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_2_FK on PRODUCTO (
+TIPO
+);
+
+/*==============================================================*/
+/* Table: TIPO                                                  */
+/*==============================================================*/
+create table TIPO (
+   ID                   SERIAL               not null,
+   NOMBRE               TEXT                 null,
+   DESCRIPCION          TEXT                 null,
+   PADRE                INT4                 null,
+   constraint PK_TIPO primary key (ID)
+);
+
+/*==============================================================*/
+/* Index: TIPO_PK                                               */
+/*==============================================================*/
+create unique index TIPO_PK on TIPO (
+ID
+);
+
+/*==============================================================*/
+/* Index: RELATIONSHIP_1_FK                                     */
+/*==============================================================*/
+create  index RELATIONSHIP_1_FK on TIPO (
+PADRE
 );
 
 /*==============================================================*/
@@ -153,15 +74,12 @@ ID
 /*==============================================================*/
 create table TRACKING (
    ID                   SERIAL               not null,
-   PROVEEDOR            INT4                 null,
    PRODUCTO             INT4                 null,
-   USUARIO              TEXT                 null,
-   CANTIDAD             INT4                 null,
-   SALDO                INT4                 null,
-   TIPO                 CHAR(2)              null,
    FECHA                DATE                 null,
-   SERIAL               TEXT                 null,
-   VALOR                DECIMAL(6,4)         null,
+   TIPO                 CHAR(2)              null,
+   USUARIO              CHAR(10)             null,
+   VALOR                INT4                 null,
+   SALDO                INT4                 null,
    constraint PK_TRACKING primary key (ID)
 );
 
@@ -173,45 +91,35 @@ ID
 );
 
 /*==============================================================*/
-/* Index: RELATIONSHIP_2_FK                                     */
+/* Table: USUARIO                                               */
 /*==============================================================*/
-create  index RELATIONSHIP_2_FK on TRACKING (
-PROVEEDOR
+create table USUARIO (
+   ID                   SERIAL               not null,
+   NOMBRE               TEXT                 null,
+   APELLIDOS            TEXT                 null,
+   USUARIO              TEXT                 null,
+   PWD                  TEXT                 null,
+   constraint PK_USUARIO primary key (ID)
 );
 
 /*==============================================================*/
-/* Index: RELATIONSHIP_4_FK                                     */
+/* Index: USUARIO_PK                                            */
 /*==============================================================*/
-create  index RELATIONSHIP_4_FK on TRACKING (
-PRODUCTO
+create unique index USUARIO_PK on USUARIO (
+ID
 );
 
-alter table CODIGOS
-   add constraint FK_CODIGOS_RELATIONS_MAESTRO foreign key (MAESTRO)
-      references MAESTRO (ID)
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_RELATIONS_TIPO foreign key (TIPO)
+      references TIPO (ID)
       on delete restrict on update restrict;
 
-alter table DETALLEFACTURA
-   add constraint FK_DETALLEF_RELATIONS_FACTURA foreign key (FACTURA)
-      references FACTURA (IDF)
-      on delete restrict on update restrict;
-
-alter table DETALLEFACTURA
-   add constraint FK_DETALLEF_RELATIONS_TRACKING foreign key (PRODUCTO)
-      references TRACKING (ID)
-      on delete restrict on update restrict;
-
-alter table FACTURA
-   add constraint FK_FACTURA_RELATIONS_ENTIDAD foreign key (CLIENTE)
-      references ENTIDAD (ID)
+alter table TIPO
+   add constraint FK_TIPO_RELATIONS_TIPO foreign key (PADRE)
+      references TIPO (ID)
       on delete restrict on update restrict;
 
 alter table TRACKING
-   add constraint FK_TRACKING_RELATIONS_ENTIDAD foreign key (PROVEEDOR)
-      references ENTIDAD (ID)
-      on delete restrict on update restrict;
-
-alter table TRACKING
-   add constraint FK_TRACKING_RELATIONS_CODIGOS foreign key (PRODUCTO)
-      references CODIGOS (ID)
+   add constraint FK_TRACKING_RELATIONS_PRODUCTO foreign key (PRODUCTO)
+      references PRODUCTO (ID)
       on delete restrict on update restrict;

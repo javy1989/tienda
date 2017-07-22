@@ -26,8 +26,8 @@ import javax.validation.constraints.Size;
 @Table(catalog = "tienda", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
 @NamedQueries({
-    @NamedQuery(name = "Grupousuario.findAll", query = "SELECT g FROM Grupousuario g")})
-public class Grupousuario implements Serializable {
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
+public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,16 +37,21 @@ public class Grupousuario implements Serializable {
     private Integer id;
     @Size(max = 2147483647)
     @Column(length = 2147483647)
+    private String nombre;
+    @Size(max = 2147483647)
+    @Column(length = 2147483647)
+    private String apellidos;
+    @Size(max = 2147483647)
+    @Column(length = 2147483647)
     private String usuario;
-    @Size(max = 2)
-    @Column(length = 2)
-    private String tipo;
-    private Boolean estado;
+    @Size(max = 2147483647)
+    @Column(length = 2147483647)
+    private String pwd;
 
-    public Grupousuario() {
+    public Usuario() {
     }
 
-    public Grupousuario(Integer id) {
+    public Usuario(Integer id) {
         this.id = id;
     }
 
@@ -58,6 +63,22 @@ public class Grupousuario implements Serializable {
         this.id = id;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
     public String getUsuario() {
         return usuario;
     }
@@ -66,20 +87,12 @@ public class Grupousuario implements Serializable {
         this.usuario = usuario;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Boolean getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     @Override
@@ -92,10 +105,10 @@ public class Grupousuario implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Grupousuario)) {
+        if (!(object instanceof Usuario)) {
             return false;
         }
-        Grupousuario other = (Grupousuario) object;
+        Usuario other = (Usuario) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -104,7 +117,7 @@ public class Grupousuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.servicios.modelo.Grupousuario[ id=" + id + " ]";
+        return "com.tienda.modelo.Usuario[ id=" + id + " ]";
     }
     
 }

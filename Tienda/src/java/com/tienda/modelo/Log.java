@@ -6,19 +6,20 @@
 package com.tienda.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -28,8 +29,8 @@ import javax.persistence.UniqueConstraint;
 @Table(catalog = "tienda", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
 @NamedQueries({
-    @NamedQuery(name = "Detallefactura.findAll", query = "SELECT d FROM Detallefactura d")})
-public class Detallefactura implements Serializable {
+    @NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l")})
+public class Log implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,18 +38,22 @@ public class Detallefactura implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    private Integer cantidad;
-    @JoinColumn(name = "factura", referencedColumnName = "idf")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Factura factura;
-    @JoinColumn(name = "producto", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Tracking producto;
+    @Size(max = 2147483647)
+    @Column(length = 2147483647)
+    private String entidad;
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
+    @Size(max = 2147483647)
+    @Column(length = 2147483647)
+    private String valor;
+    @Size(max = 10)
+    @Column(length = 10)
+    private String usuario;
 
-    public Detallefactura() {
+    public Log() {
     }
 
-    public Detallefactura(Integer id) {
+    public Log(Integer id) {
         this.id = id;
     }
 
@@ -60,28 +65,36 @@ public class Detallefactura implements Serializable {
         this.id = id;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
+    public String getEntidad() {
+        return entidad;
     }
 
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
+    public void setEntidad(String entidad) {
+        this.entidad = entidad;
     }
 
-    public Factura getFactura() {
-        return factura;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFactura(Factura factura) {
-        this.factura = factura;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
-    public Tracking getProducto() {
-        return producto;
+    public String getValor() {
+        return valor;
     }
 
-    public void setProducto(Tracking producto) {
-        this.producto = producto;
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -94,10 +107,10 @@ public class Detallefactura implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Detallefactura)) {
+        if (!(object instanceof Log)) {
             return false;
         }
-        Detallefactura other = (Detallefactura) object;
+        Log other = (Log) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -106,7 +119,7 @@ public class Detallefactura implements Serializable {
 
     @Override
     public String toString() {
-        return "com.servicios.modelo.Detallefactura[ id=" + id + " ]";
+        return "com.tienda.modelo.Log[ id=" + id + " ]";
     }
     
 }

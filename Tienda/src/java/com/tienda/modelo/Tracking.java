@@ -6,9 +6,7 @@
 package com.tienda.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,30 +41,19 @@ public class Tracking implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    @Size(max = 2147483647)
-    @Column(length = 2147483647)
-    private String usuario;
-    private Integer cantidad;
-    private Integer saldo;
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     @Size(max = 2)
     @Column(length = 2)
     private String tipo;
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-    @Size(max = 2147483647)
-    @Column(length = 2147483647)
-    private String serial;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(precision = 6, scale = 4)
-    private BigDecimal valor;
-    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
-    private List<Detallefactura> detallefacturaList;
+    @Size(max = 10)
+    @Column(length = 10)
+    private String usuario;
+    private Integer valor;
+    private Integer saldo;
     @JoinColumn(name = "producto", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Codigos producto;
-    @JoinColumn(name = "proveedor", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Entidad proveedor;
+    private Producto producto;
 
     public Tracking() {
     }
@@ -84,28 +70,12 @@ public class Tracking implements Serializable {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Integer getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(Integer saldo) {
-        this.saldo = saldo;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getTipo() {
@@ -116,52 +86,36 @@ public class Tracking implements Serializable {
         this.tipo = tipo;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
-
-    public BigDecimal getValor() {
+    public Integer getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Integer valor) {
         this.valor = valor;
     }
 
-    public List<Detallefactura> getDetallefacturaList() {
-        return detallefacturaList;
+    public Integer getSaldo() {
+        return saldo;
     }
 
-    public void setDetallefacturaList(List<Detallefactura> detallefacturaList) {
-        this.detallefacturaList = detallefacturaList;
+    public void setSaldo(Integer saldo) {
+        this.saldo = saldo;
     }
 
-    public Codigos getProducto() {
+    public Producto getProducto() {
         return producto;
     }
 
-    public void setProducto(Codigos producto) {
+    public void setProducto(Producto producto) {
         this.producto = producto;
-    }
-
-    public Entidad getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Entidad proveedor) {
-        this.proveedor = proveedor;
     }
 
     @Override
@@ -186,7 +140,7 @@ public class Tracking implements Serializable {
 
     @Override
     public String toString() {
-        return "com.servicios.modelo.Tracking[ id=" + id + " ]";
+        return "com.tienda.modelo.Tracking[ id=" + id + " ]";
     }
     
 }

@@ -5,14 +5,10 @@
  */
 package com.tienda.bean;
 
-import com.tienda.modelo.Entidad;
-import com.tienda.modelo.Grupousuario;
-import com.tienda.servicios.GrupousuarioFacade;
+import com.tienda.modelo.Usuario;
 import java.io.Serializable;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -22,40 +18,22 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class DatosLogueoBean implements Serializable {
 
-    @EJB
-    private GrupousuarioFacade ejbGrupo;
-
-    private Entidad usuario;
-    private Grupousuario grupo;
+    private Usuario usuario;
 
     public DatosLogueoBean() {
     }
 
-    public String setLogueo(Entidad entidad) {
-        this.usuario = entidad;
-        grupo = ejbGrupo.traeGrupodeUsuario(usuario.getPin());
-        if (grupo == null) {
-            this.usuario = null;
-            return null;
-        }
-
+    public String setLogueo(Usuario usuario) {
+        this.usuario = usuario;
         return null;
     }
 
-    public Entidad getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Entidad usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public Grupousuario getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupousuario grupo) {
-        this.grupo = grupo;
     }
 
 }

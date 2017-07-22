@@ -31,8 +31,8 @@ import javax.validation.constraints.Size;
 @Table(catalog = "tienda", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
 @NamedQueries({
-    @NamedQuery(name = "Codigos.findAll", query = "SELECT c FROM Codigos c")})
-public class Codigos implements Serializable {
+    @NamedQuery(name = "Tipo.findAll", query = "SELECT t FROM Tipo t")})
+public class Tipo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,24 +45,19 @@ public class Codigos implements Serializable {
     private String nombre;
     @Size(max = 2147483647)
     @Column(length = 2147483647)
-    private String codigo;
-    @Size(max = 2147483647)
-    @Column(length = 2147483647)
     private String descripcion;
-    @Size(max = 2147483647)
-    @Column(length = 2147483647)
-    private String parametros;
-    private Boolean estado;
-    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
-    private List<Tracking> trackingList;
-    @JoinColumn(name = "maestro", referencedColumnName = "id")
+    @OneToMany(mappedBy = "padre", fetch = FetchType.LAZY)
+    private List<Tipo> tipoList;
+    @JoinColumn(name = "padre", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Maestro maestro;
+    private Tipo padre;
+    @OneToMany(mappedBy = "tipo", fetch = FetchType.LAZY)
+    private List<Producto> productoList;
 
-    public Codigos() {
+    public Tipo() {
     }
 
-    public Codigos(Integer id) {
+    public Tipo(Integer id) {
         this.id = id;
     }
 
@@ -82,14 +77,6 @@ public class Codigos implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
     public String getDescripcion() {
         return descripcion;
     }
@@ -98,36 +85,28 @@ public class Codigos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getParametros() {
-        return parametros;
+    public List<Tipo> getTipoList() {
+        return tipoList;
     }
 
-    public void setParametros(String parametros) {
-        this.parametros = parametros;
+    public void setTipoList(List<Tipo> tipoList) {
+        this.tipoList = tipoList;
     }
 
-    public Boolean getEstado() {
-        return estado;
+    public Tipo getPadre() {
+        return padre;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setPadre(Tipo padre) {
+        this.padre = padre;
     }
 
-    public List<Tracking> getTrackingList() {
-        return trackingList;
+    public List<Producto> getProductoList() {
+        return productoList;
     }
 
-    public void setTrackingList(List<Tracking> trackingList) {
-        this.trackingList = trackingList;
-    }
-
-    public Maestro getMaestro() {
-        return maestro;
-    }
-
-    public void setMaestro(Maestro maestro) {
-        this.maestro = maestro;
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
     }
 
     @Override
@@ -140,10 +119,10 @@ public class Codigos implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Codigos)) {
+        if (!(object instanceof Tipo)) {
             return false;
         }
-        Codigos other = (Codigos) object;
+        Tipo other = (Tipo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -152,7 +131,7 @@ public class Codigos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.servicios.modelo.Codigos[ id=" + id + " ]";
+        return "com.tienda.modelo.Tipo[ id=" + id + " ]";
     }
     
 }

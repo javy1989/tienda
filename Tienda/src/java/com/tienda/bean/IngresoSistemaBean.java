@@ -5,13 +5,17 @@
  */
 package com.tienda.bean;
 
-import com.tienda.modelo.Entidad;
-import com.tienda.servicios.EntidadFacade;
+import com.tienda.modelo.Usuario;
+import com.tienda.servicios.UsuarioFacade;
 import com.tienda.utilidades.Mensajes;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,27 +28,28 @@ public class IngresoSistemaBean {
     @ManagedProperty(value = "#{datosLogueo}")
     private DatosLogueoBean seguridad;
     @EJB
-    private EntidadFacade ejbEntidad;
+    private UsuarioFacade ejbUsuario;
     private String usr;
     private String pwd;
-    private Entidad usuario;
+
 
     public IngresoSistemaBean() {
     }
     
     public String login() {
-        usuario = ejbEntidad.traeUsrPwd(usr, pwd);
-        if (usuario == null) {
-            pwd="";
-            Mensajes.error("Usuario o contrasenia invalidos");
-            return null;
+        try {
+            Usuario  usuario = ejbUsuario.traeUsrPwd(usr, pwd);
+            if (usuario == null) {
+                pwd="";
+                Mensajes.error("Usuario o contrasenia invalidos");
+                return null;
+            }
+            seguridad.setLogueo(usuario);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./sistema/blanco.jsf?faces-redirect=true");
+        } catch (IOException ex) {
+            Logger.getLogger(IngresoSistemaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        seguridad.setLogueo(usuario);
-        if (seguridad.getGrupo()==null) {
-            Mensajes.informacion("Usuario no tiene asignado perfil");
-            return null;
-        }
-        return "/sistema/blanco.xhtml?faces-redirect=true";
+        return null;
     }
     
     public DatosLogueoBean getSeguridad() {

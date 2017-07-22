@@ -5,17 +5,18 @@
  */
 package com.tienda.servicios;
 
-import com.tienda.modelo.Detallefactura;
+import com.tienda.modelo.Usuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author ricardo
  */
 @Stateless
-public class DetallefacturaFacade extends AbstractFacade<Detallefactura> {
+public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "TiendaPU")
     private EntityManager em;
@@ -25,8 +26,14 @@ public class DetallefacturaFacade extends AbstractFacade<Detallefactura> {
         return em;
     }
 
-    public DetallefacturaFacade() {
-        super(Detallefactura.class);
+    public UsuarioFacade() {
+        super(Usuario.class);
     }
-    
+
+    public Usuario traeUsrPwd(String usr, String pwd) {
+        Query q = em.createQuery("select u from Usuario as u where u.usuario= :usr and u.pwd= :pwd");
+        q.setParameter("usr", usr);
+        q.setParameter("pwd", pwd);
+        return (Usuario) q.getSingleResult();
+    }
 }
