@@ -5,10 +5,12 @@
  */
 package com.tienda.servicios;
 
+import com.tienda.modelo.Producto;
 import com.tienda.modelo.Tracking;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,10 @@ public class TrackingFacade extends AbstractFacade<Tracking> {
     public TrackingFacade() {
         super(Tracking.class);
     }
-    
+
+    public int getUltimoSaldoPrducto(Producto p) {
+        Query q = em.createQuery("select t.saldo from Tracking as t where t.producto= :producto ORDER BY t.id DESC");
+        q.setParameter("producto", p);
+        return q.getFirstResult();
+    }
 }

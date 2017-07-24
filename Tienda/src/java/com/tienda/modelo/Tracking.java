@@ -5,11 +5,14 @@
  */
 package com.tienda.modelo;
 
+import com.tienda.utilidades.TransaccionEnum;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,9 +46,9 @@ public class Tracking implements Serializable {
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Size(max = 2)
-    @Column(length = 2)
-    private String tipo;
+    
+    @Enumerated(EnumType.STRING)
+    private TransaccionEnum tipo;
     @Size(max = 10)
     @Column(length = 10)
     private String usuario;
@@ -78,13 +81,14 @@ public class Tracking implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getTipo() {
+    public TransaccionEnum getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TransaccionEnum tipo) {
         this.tipo = tipo;
     }
+
 
     public String getUsuario() {
         return usuario;
@@ -140,7 +144,7 @@ public class Tracking implements Serializable {
 
     @Override
     public String toString() {
-        return "com.tienda.modelo.Tracking[ id=" + id + " ]";
+        return "{producto:"+this.producto+";fecha:"+this.fecha+";saldo"+this.saldo+";valor:"+this.valor+"}";
     }
     
 }

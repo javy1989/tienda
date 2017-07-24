@@ -33,7 +33,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         super(Producto.class);
     }
 
-    public List<Producto> traeProductos() throws ConsultarException {
+    public List<Producto> getProductosEstado() throws ConsultarException {
         Map parametros=new HashMap();
         parametros.put(";where", "o.estado=true");
         parametros.put(";orden", "o.descripcion");

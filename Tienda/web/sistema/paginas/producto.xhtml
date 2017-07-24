@@ -5,10 +5,66 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="../../WEB-INF/templatehome.xhtml">
     <ui:define name="content">
-        <div class="Container100">
-            <p:panel header="Ingreso de producto">
-                
-            </p:panel>
-        </div>
+        <h:form id="form">
+            <div class="Container100">
+                <p:panel header="Ingreso de producto" rendered="#{!producto.frmProducto.mostrar}">
+                    <p:commandButton value="Nuevo Prodcuto" action="#{producto.nuevoProducto()}" update="@form" styleClass="TexAlCenter"/>
+                    <div class="EmptyBox10"></div>
+                    <p:dataTable id="data" value="#{producto.productos}" var="pro"
+                                 paginator="true"
+                                 resizableColumns="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20"
+                                 emptyMessage="No hay registros"
+                                 rows="10">
+                        <p:column headerText="Descripcion">
+                            <h:outputText value="#{pro.descripcion}"/>
+                        </p:column> 
+                        <p:column headerText="Tipo Producto">
+                            <h:outputText value="#{pro.tipo.descripcion}"/>
+                        </p:column> 
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{pro.codigo}"/>
+                        </p:column> 
+                        <p:column headerText="Acciones">
+                            <p:panelGrid layout="grid" columns="3" style="border: none;">
+                                <p:commandButton value="Salida"/>
+                                <p:commandButton value="Ingreso"/>
+                                <p:commandButton value="Editar"/>
+                            </p:panelGrid>
+                        </p:column> 
+                    </p:dataTable>
+                </p:panel>
+                <p:panel header="Mantenimiento Producto" rendered="#{producto.frmProductoV.mostrar}">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Tipo Mercaderia"/>
+                        <p:selectOneMenu value="#{producto.producto.tipo.padre}">
+                            <f:selectItems value="#{producto.tipoItem}"/>
+                            <p:ajax event="change" immediate="true" update="tipop"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Tipo Producto"/>
+                        <p:selectOneMenu id="tipop" value="#{producto.producto.tipo}">
+                            <f:selectItems value="#{producto.tipoHijoItem}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Descripcion" for="des"/>
+                        <p:inputText id="des" value="#{producto.producto.descripcion}"/>
+
+                        <h:outputLabel value="Codigo" for="cod"/>
+                        <p:inputText id="cod" value="#{producto.producto.codigo}"/>
+
+                        <h:outputLabel value="Cantidad" for="can" rendered="#{producto.ingreso or producto.salida}"/>
+                        <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{producto.ingreso or producto.salida}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2">
+                        <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(2)}" update="@form"/>
+                        <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{producto.producto.id==null}"/>
+                        <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.frmProductoV.modificar and( producto.ingreso or producto.salida)}"/>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
