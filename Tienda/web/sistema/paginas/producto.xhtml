@@ -27,10 +27,13 @@
                         <p:column headerText="Codigo">
                             <h:outputText value="#{pro.codigo}"/>
                         </p:column> 
+                        <p:column headerText="Stock">
+                            <h:outputText value="#{producto.ultimoTracking(pro)}"/>
+                        </p:column>
                         <p:column headerText="Acciones">
                             <p:panelGrid layout="grid" columns="3" style="border: none;">
                                 <p:commandButton value="Salida"/>
-                                <p:commandButton value="Ingreso"/>
+                                <p:commandButton value="Ingreso" action="#{producto.ingresaProducto(pro)}" update="@form"/>
                                 <p:commandButton value="Editar"/>
                             </p:panelGrid>
                         </p:column> 

@@ -60,7 +60,7 @@ public class ProductoBean {
     private int valor;
     private boolean salida;
     private boolean ingreso;
-
+   
     public ProductoBean() {
     }
 
@@ -110,7 +110,7 @@ public class ProductoBean {
         if (producto == null) {
             return null;
         }
-        cambiaFormulario(2);
+        cambiaFormulario(1);
         ingreso = true;
         return null;
     }
@@ -149,7 +149,7 @@ public class ProductoBean {
             String usr = seguridad.getUsuario().getUsuario();
             if (producto.getId() == null) {
                 ejbProducto.create(producto, usr);
-                ingresarTracking(usr, ultimoTracking());
+                ingresarTracking(usr, ultimoTracking(producto));
             } else {
                 ejbProducto.edit(producto, usr);
             }
@@ -170,7 +170,7 @@ public class ProductoBean {
         }
         try {
             String usr = seguridad.getUsuario().getUsuario();
-            int saldo = ultimoTracking();
+            int saldo = ultimoTracking(producto);
             if (ingreso) {
                 ingresarTracking(usr, saldo);
                 ingreso = false;
@@ -189,8 +189,8 @@ public class ProductoBean {
         return null;
     }
 
-    private int ultimoTracking() {
-        return ejbTracking.getUltimoSaldoPrducto(producto);
+    public int ultimoTracking(Producto p) {
+          return ejbTracking.getUltimoSaldoPrducto(p);
     }
 
     private void ingresarTracking(String usr, int saldo) throws InsertarException {
@@ -242,7 +242,7 @@ public class ProductoBean {
                 break;
             case 2:
                 frmProducto.insertar();
-                frmProducto.editar();
+                frmProductoV.editar();
                 break;
 
         }

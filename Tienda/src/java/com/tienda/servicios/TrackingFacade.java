@@ -32,8 +32,8 @@ public class TrackingFacade extends AbstractFacade<Tracking> {
     }
 
     public int getUltimoSaldoPrducto(Producto p) {
-        Query q = em.createQuery("select t.saldo from Tracking as t where t.producto= :producto ORDER BY t.id DESC");
+        Query q = em.createQuery("select t from Tracking as t where t.producto= :producto ORDER BY t.id DESC");
         q.setParameter("producto", p);
-        return q.getFirstResult();
+        return (q.getFirstResult());
     }
 }
