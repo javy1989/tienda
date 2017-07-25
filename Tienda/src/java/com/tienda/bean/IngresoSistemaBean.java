@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "ingreso")
 @RequestScoped
 public class IngresoSistemaBean {
-    
+
     @ManagedProperty(value = "#{datosLogueo}")
     private DatosLogueoBean seguridad;
     @EJB
@@ -32,15 +32,14 @@ public class IngresoSistemaBean {
     private String usr;
     private String pwd;
 
-
     public IngresoSistemaBean() {
     }
-    
+
     public String login() {
         try {
-            Usuario  usuario = ejbUsuario.traeUsrPwd(usr, pwd);
+            Usuario usuario = ejbUsuario.traeUsrPwd(usr, pwd);
             if (usuario == null) {
-                pwd="";
+                pwd = "";
                 Mensajes.error("Usuario o contrasenia invalidos");
                 return null;
             }
@@ -51,29 +50,39 @@ public class IngresoSistemaBean {
         }
         return null;
     }
-    
+
+    public String logout() {
+        // destruye el objeto en session que se creo para validar el usuario
+        // si hay mas objectos en session los destruye a todos y redirecciona al
+        // inicio
+        FacesContext.getCurrentInstance().getExternalContext()
+                .invalidateSession();
+        return "/index.jsf?faces-redirect=true";
+
+    }
+
     public DatosLogueoBean getSeguridad() {
         return seguridad;
     }
-    
+
     public void setSeguridad(DatosLogueoBean seguridad) {
         this.seguridad = seguridad;
     }
-    
+
     public String getUsr() {
         return usr;
     }
-    
+
     public void setUsr(String usr) {
         this.usr = usr;
     }
-    
+
     public String getPwd() {
         return pwd;
     }
-    
+
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
-    
+
 }

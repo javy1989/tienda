@@ -17,7 +17,7 @@
                     <p:splitButton value="Acciones" icon="ui-icon-check fa fa-power-off" styleClass="White Fs14" appendTo="@this">
                         <p:menuitem value="#{datosLogueo.usuario.nombre}" icon="fa fa-user" ajax="false" />                        
                         <p:separator />
-                        <p:menuitem value="SalirN" icon="fa fa-lock"/>
+                        <p:menuitem value="SalirN" icon="fa fa-lock" action="#{ingreso.logout()}"/>
                     </p:splitButton>
                 </h:form>
             </span>

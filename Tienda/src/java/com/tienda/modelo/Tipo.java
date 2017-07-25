@@ -131,7 +131,7 @@ public class Tipo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.tienda.modelo.Tipo[ id=" + id + " ]";
+        return nombre;
     }
     
 }

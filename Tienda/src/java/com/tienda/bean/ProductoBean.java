@@ -52,15 +52,15 @@ public class ProductoBean {
     @EJB
     private LogFacade ejbLog;
 
-    private Formulario frmProducto=new Formulario();
-    private Formulario frmProductoV=new Formulario();
+    private Formulario frmProducto = new Formulario();
+    private Formulario frmProductoV = new Formulario();
     private Producto producto;
     private List<Producto> productos;
 
     private int valor;
     private boolean salida;
     private boolean ingreso;
-   
+
     public ProductoBean() {
     }
 
@@ -102,7 +102,8 @@ public class ProductoBean {
         producto = new Producto();
         producto.setTipo(new Tipo());
         cambiaFormulario(0);
-        ingreso=true;
+        ingreso=false;
+        salida=false;
     }
 
     public String ingresaProducto(Producto p) {
@@ -110,8 +111,8 @@ public class ProductoBean {
         if (producto == null) {
             return null;
         }
-        cambiaFormulario(1);
-        ingreso = true;
+        cambiaFormulario(2);
+        ingreso=true;
         return null;
     }
 
@@ -122,6 +123,15 @@ public class ProductoBean {
         }
         cambiaFormulario(2);
         salida = true;
+        return null;
+    }
+
+    public String editarProducto(Producto p) {
+        this.producto = p;
+        if (producto == null) {
+            return null;
+        }
+        cambiaFormulario(2);
         return null;
     }
 
@@ -139,9 +149,11 @@ public class ProductoBean {
             return null;
         }
 
-        if (valor == 0) {
-            Mensajes.error("Ingrese un valor mayor a cero");
-            return null;
+        if (frmProductoV.isNuevo()) {
+            if (valor == 0) {
+                Mensajes.error("Ingrese un valor mayor a cero");
+                return null;
+            }
         }
 
         producto.setEstado(Boolean.TRUE);
@@ -153,8 +165,9 @@ public class ProductoBean {
             } else {
                 ejbProducto.edit(producto, usr);
             }
-            Mensajes.error("Transaccion exitosa");  
+            Mensajes.informacion("Transaccion exitosa");
             cambiaFormulario(1);
+            initProductos();
             producto = null;
         } catch (GrabarException | InsertarException e) {
             Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, e);
@@ -175,12 +188,18 @@ public class ProductoBean {
                 ingresarTracking(usr, saldo);
                 ingreso = false;
             } else {
+                saldo -= valor;
+                if (saldo < 0) {
+                    Mensajes.informacion("Saldo no disponible para transaccion");
+                    return null;
+                }
                 salidaTracking(usr, saldo);
                 salida = false;
             }
             Mensajes.informacion("Transaccion exitosa");
-            cambiaFormulario(2);
+            cambiaFormulario(1);
             producto = null;
+            valor = 0;
 
         } catch (InsertarException e) {
             Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, e);
@@ -190,7 +209,11 @@ public class ProductoBean {
     }
 
     public int ultimoTracking(Producto p) {
-          return ejbTracking.getUltimoSaldoPrducto(p);
+        int sec = ejbTracking.getSecuencialProductoStock(p);
+        if (sec != 0) {
+            return ejbTracking.getUltimoSaldoPrducto(sec);
+        }
+        return 0;
     }
 
     private void ingresarTracking(String usr, int saldo) throws InsertarException {
@@ -206,22 +229,16 @@ public class ProductoBean {
         generaLog(Tracking.class.getName(), t.toString(), usr);
     }
 
-    private boolean salidaTracking(String usr, int saldo) throws InsertarException {
-        saldo -= valor;
-        if (saldo < 0) {
-            Mensajes.informacion("Saldo no disponible para transaccion");
-            return false;
-        }
+    private void salidaTracking(String usr, int saldo) throws InsertarException {
         Tracking t = new Tracking();
         t.setFecha(Calendar.getInstance().getTime());
         t.setProducto(producto);
-        t.setTipo(TransaccionEnum.I);
+        t.setTipo(TransaccionEnum.O);
         t.setUsuario(usr);
         t.setValor(valor);
         t.setSaldo(saldo);
         ejbTracking.create(t, usr);
         generaLog(Tracking.class.getName(), t.toString(), usr);
-        return true;
     }
 
     /**
@@ -239,6 +256,9 @@ public class ProductoBean {
             case 1:
                 frmProducto.cancelar();
                 frmProductoV.cancelar();
+                ingreso=false;
+                salida=false;
+                producto=null;
                 break;
             case 2:
                 frmProducto.insertar();

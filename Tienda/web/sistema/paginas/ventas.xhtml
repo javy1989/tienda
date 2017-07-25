@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templatehome.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="Container100">
+                <p:panel header="Reporte de Ventas por fecha">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="fecI" value="Fecha Desde:" />
+                        <p:calendar id="fecI" value="#{venta.fechaInicio}" pattern="yyyy-MM-dd" mask="true" />
+                        <p:outputLabel for="fecH" value="Fecha Hasta:" />
+                        <p:calendar id="fecH" value="#{venta.fechaFin}" pattern="yyyy-MM-dd" mask="true" />
+                    </p:panelGrid>
+                    <p:panelGrid columns="2">
+                        <p:commandButton value="Buscar" action="#{venta.reporteVentas()}" update="@form"/>
+                        <h:commandLink>
+                            <p:graphicImage name="/images/excel.png" width="50" height="50" />
+                            <p:dataExporter type="xls" target="data" fileName="ventas" pageOnly="true"/>
+                        </h:commandLink>    
+                    </p:panelGrid>
+
+                    <div class="EmptyBox10"></div>
+                    <p:dataTable id="data" value="#{venta.ventas}" var="ve"
+                                 widgetVar="ventas"
+                                 paginator="true"
+                                 resizableColumns="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20"
+                                 emptyMessage="No hay registros"
+                                 rows="10">
+                        <p:column headerText="Ventas">
+                            <h:outputText value="#{ve.ventas}"/>
+                        </p:column> 
+                        <p:column headerText="Tipo Producto">
+                            <h:outputText value="#{ve.codigo}" style="white-space: pre-wrap;"/>
+                        </p:column> 
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{ve.descripcion}"/>
+                        </p:column> 
+                        <p:column headerText="Usuario">
+                            <h:outputText value="#{ve.usuario}"/>
+                        </p:column> 
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

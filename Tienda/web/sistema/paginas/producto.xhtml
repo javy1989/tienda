@@ -19,10 +19,10 @@
                                  emptyMessage="No hay registros"
                                  rows="10">
                         <p:column headerText="Descripcion">
-                            <h:outputText value="#{pro.descripcion}"/>
+                            <h:outputText value="#{pro.descripcion}" style="white-space: pre-wrap;"/>
                         </p:column> 
                         <p:column headerText="Tipo Producto">
-                            <h:outputText value="#{pro.tipo.descripcion}"/>
+                            <h:outputText value="#{pro.tipo.descripcion}" style="white-space: pre-wrap;"/>
                         </p:column> 
                         <p:column headerText="Codigo">
                             <h:outputText value="#{pro.codigo}"/>
@@ -30,11 +30,11 @@
                         <p:column headerText="Stock">
                             <h:outputText value="#{producto.ultimoTracking(pro)}"/>
                         </p:column>
-                        <p:column headerText="Acciones">
+                        <p:column headerText="Acciones" width="30%">
                             <p:panelGrid layout="grid" columns="3" style="border: none;">
-                                <p:commandButton value="Salida"/>
+                                <p:commandButton value="Salida" action="#{producto.salidaProducto(pro)}" update="@form"/>
                                 <p:commandButton value="Ingreso" action="#{producto.ingresaProducto(pro)}" update="@form"/>
-                                <p:commandButton value="Editar"/>
+                                <p:commandButton value="Editar" action="#{producto.editarProducto(pro)}" update="@form"/>
                             </p:panelGrid>
                         </p:column> 
                     </p:dataTable>
@@ -58,13 +58,13 @@
                         <h:outputLabel value="Codigo" for="cod"/>
                         <p:inputText id="cod" value="#{producto.producto.codigo}"/>
 
-                        <h:outputLabel value="Cantidad" for="can" rendered="#{producto.ingreso or producto.salida}"/>
-                        <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{producto.ingreso or producto.salida}"/>
+                        <h:outputLabel value="Cantidad" for="can" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
+                        <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
                     </p:panelGrid>
                     <p:panelGrid columns="2">
-                        <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(2)}" update="@form"/>
-                        <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{producto.producto.id==null}"/>
-                        <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.frmProductoV.modificar and( producto.ingreso or producto.salida)}"/>
+                        <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(1)}" update="@form"/>
+                        <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{(producto.frmProductoV.nuevo or producto.frmProductoV.modificar) and (!producto.ingreso and !producto.salida)}"/>
+                        <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.ingreso or producto.salida}"/>
                     </p:panelGrid>
                 </p:panel>
             </div>
