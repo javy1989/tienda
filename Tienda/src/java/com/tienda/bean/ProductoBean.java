@@ -60,6 +60,7 @@ public class ProductoBean {
     private int valor;
     private boolean salida;
     private boolean ingreso;
+    private Tipo tipo;
 
     public ProductoBean() {
     }
@@ -102,8 +103,8 @@ public class ProductoBean {
         producto = new Producto();
         producto.setTipo(new Tipo());
         cambiaFormulario(0);
-        ingreso=false;
-        salida=false;
+        ingreso = false;
+        salida = false;
     }
 
     public String ingresaProducto(Producto p) {
@@ -112,7 +113,7 @@ public class ProductoBean {
             return null;
         }
         cambiaFormulario(2);
-        ingreso=true;
+        ingreso = true;
         return null;
     }
 
@@ -256,9 +257,9 @@ public class ProductoBean {
             case 1:
                 frmProducto.cancelar();
                 frmProductoV.cancelar();
-                ingreso=false;
-                salida=false;
-                producto=null;
+                ingreso = false;
+                salida = false;
+                producto = null;
                 break;
             case 2:
                 frmProducto.insertar();
@@ -266,6 +267,32 @@ public class ProductoBean {
                 break;
 
         }
+    }
+
+    public void nuevoTipoPadre() {
+        tipo = new Tipo();
+    }
+
+    public void guardarTipoPadre() {
+        try {
+            ejbTipo.create(tipo, seguridad.getUsuario().getUsuario());
+            Mensajes.informacion("Transaccion Existosa");
+            tipo = null;
+        } catch (InsertarException ex) {
+            Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String guardarTipoHijo() {
+        try {
+            ejbTipo.create(tipo, seguridad.getUsuario().getUsuario());
+            Mensajes.informacion("Transaccion Existosa");
+            getTipoHijoItem();
+            tipo = null;
+        } catch (InsertarException | ConsultarException ex) {
+            Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     private void generaLog(String entidad, String cadena, String usr) throws InsertarException {
@@ -339,6 +366,14 @@ public class ProductoBean {
 
     public void setSeguridad(DatosLogueoBean seguridad) {
         this.seguridad = seguridad;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
 
 }

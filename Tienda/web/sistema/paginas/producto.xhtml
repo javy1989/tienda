@@ -8,7 +8,7 @@
         <h:form id="form">
             <div class="Container100">
                 <p:panel header="Ingreso de producto" rendered="#{!producto.frmProducto.mostrar}">
-                    <p:commandButton value="Nuevo Prodcuto" action="#{producto.nuevoProducto()}" update="@form" styleClass="TexAlCenter"/>
+                    <p:commandButton value="Nuevo Prodcuto" action="#{producto.nuevoProducto()}" update="@form" styleClass="TexAlCenter" icon="fa fa-plus-circle"/>
                     <div class="EmptyBox10"></div>
                     <p:dataTable id="data" value="#{producto.productos}" var="pro"
                                  paginator="true"
@@ -30,42 +30,92 @@
                         <p:column headerText="Stock">
                             <h:outputText value="#{producto.ultimoTracking(pro)}"/>
                         </p:column>
-                        <p:column headerText="Acciones" width="30%">
+                        <p:column headerText="Acciones" width="40%">
                             <p:panelGrid layout="grid" columns="3" style="border: none;">
-                                <p:commandButton value="Salida" action="#{producto.salidaProducto(pro)}" update="@form"/>
-                                <p:commandButton value="Ingreso" action="#{producto.ingresaProducto(pro)}" update="@form"/>
-                                <p:commandButton value="Editar" action="#{producto.editarProducto(pro)}" update="@form"/>
+                                <p:commandButton value="Salida" action="#{producto.salidaProducto(pro)}" update="@form" icon="fa fa-search-minus"/>
+                                <p:commandButton value="Ingreso" action="#{producto.ingresaProducto(pro)}" update="@form" icon="fa  fa-search-plus"/>
+                                <p:commandButton value="Editar" action="#{producto.editarProducto(pro)}" update="@form" icon="fa fa-edit"/>
                             </p:panelGrid>
                         </p:column> 
                     </p:dataTable>
                 </p:panel>
                 <p:panel header="Mantenimiento Producto" rendered="#{producto.frmProductoV.mostrar}">
-                    <p:panelGrid columns="2">
-                        <h:outputLabel value="Tipo Mercaderia"/>
-                        <p:selectOneMenu value="#{producto.producto.tipo.padre}">
-                            <f:selectItems value="#{producto.tipoItem}"/>
-                            <p:ajax event="change" immediate="true" update="tipop"/>
-                        </p:selectOneMenu>
+                    <div class="ui-fluid">
+                        <h:panelGroup>
+                            <p:panelGrid columns="3" layout="grid" style="border: none;" columnClasses="ui-grid-col-1 ui-grid-col-1 ui-grid-col-1">
+                                <h:outputLabel value="Tipo Mercaderia"/>
+                                <p:selectOneMenu id="tipmer" value="#{producto.producto.tipo.padre}">
+                                    <f:selectItems value="#{producto.tipoItem}"/>
+                                    <p:ajax event="change" immediate="true" update="tipop"/>
+                                </p:selectOneMenu>
+                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipomDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this"/>
+                                <h:outputLabel value="Tipo Producto"/>
+                                <p:selectOneMenu id="tipop" value="#{producto.producto.tipo}">
+                                    <f:selectItems value="#{producto.tipoHijoItem}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipopDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" layout="grid" style="border: none;" columnClasses="ui-grid-col-1 ui-grid-col-1">
+                                <h:outputLabel value="Descripcion" for="des"/>
+                                <p:inputText id="des" value="#{producto.producto.descripcion}" styleClass="Wid10"/>
 
-                        <h:outputLabel value="Tipo Producto"/>
-                        <p:selectOneMenu id="tipop" value="#{producto.producto.tipo}">
-                            <f:selectItems value="#{producto.tipoHijoItem}"/>
-                        </p:selectOneMenu>
+                                <h:outputLabel value="Codigo" for="cod"/>
+                                <p:inputText id="cod" value="#{producto.producto.codigo}" styleClass="Wid90"/>
 
-                        <h:outputLabel value="Descripcion" for="des"/>
-                        <p:inputText id="des" value="#{producto.producto.descripcion}"/>
+                                <h:outputLabel value="Cantidad" for="can" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
+                                <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                        <p:panelGrid columns="2" layout="grid"  style="border: none;width: 50%" columnClasses="ui-grid-col-6 ui-grid-col-6" >
+                            <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(1)}" update="@form" process="@this"/>
+                            <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{(producto.frmProductoV.nuevo or producto.frmProductoV.modificar) and (!producto.ingreso and !producto.salida)}"/>
+                            <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.ingreso or producto.salida}"/>
+                        </p:panelGrid>
+                    </div>
+                    <p:dialog id="tipm" header="Tipo de Mercaderia" widgetVar="tipomDlg" resizable="false" modal="true">
+                        <h:form>
+                            <p:panelGrid columns="2">
+                                <h:outputLabel value="Nombre" for="nomTP"/>
+                                <p:inputText id="nomTP" value="#{producto.tipo.nombre}" required="true" requiredMessage="Ingrese nombre">
+                                    <f:ajax immediate="true" render="@this"/>
+                                </p:inputText>
 
-                        <h:outputLabel value="Codigo" for="cod"/>
-                        <p:inputText id="cod" value="#{producto.producto.codigo}"/>
+                                <h:outputLabel value="Descripcion" for="desTP"/>
+                                <p:inputText id="desTP" value="#{producto.tipo.descripcion}" required="true" requiredMessage="Ingrese descripcion">
+                                    <f:ajax immediate="true" render="@this"/>
+                                </p:inputText>
+                            </p:panelGrid>
+                            <div class="EmptyBox10"/>
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Cancelar" icon="fa fa-trash" process="@this" onclick="PF('tipopDlg').hide()"/>
+                                <p:commandButton value="Guadar" icon="fa fa-save" action="#{producto.guardarTipoPadre()}" oncomplete="PF('tipomDlg').hide()" process="@this" update="form:tipmer"/>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:dialog>
 
-                        <h:outputLabel value="Cantidad" for="can" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
-                        <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
-                    </p:panelGrid>
-                    <p:panelGrid columns="2">
-                        <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(1)}" update="@form"/>
-                        <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{(producto.frmProductoV.nuevo or producto.frmProductoV.modificar) and (!producto.ingreso and !producto.salida)}"/>
-                        <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.ingreso or producto.salida}"/>
-                    </p:panelGrid>
+                    <p:dialog id="tipp" header="Tipo de Producto" widgetVar="tipopDlg" resizable="false" modal="true">
+                        <p:panelGrid columns="2">
+                            <h:outputLabel value="Tipo Mercaderia"/>
+                            <p:selectOneMenu value="#{producto.tipo.padre}" required="true" requiredMessage="Tipo Mercaderia necesaria">
+                                <f:selectItems value="#{producto.tipoItem}"/>
+                                <f:ajax immediate="true" render="@this"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Nombre" for="nomTH" />
+                            <p:inputText id="nomTH" value="#{producto.tipo.nombre}" required="true" requiredMessage="Ingrese nombre">
+                                <f:ajax immediate="true" render="@this"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Descripcion" for="desTH"/>
+                            <p:inputText id="desTH" value="#{producto.tipo.descripcion}" required="true" requiredMessage="Ingrese descripcion">
+                                <f:ajax immediate="true" render="@this"/>
+                            </p:inputText>
+                        </p:panelGrid>
+                        <div class="EmptyBox10"/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Cancelar" icon="fa fa-trash" process="@this" onclick="PF('tipopDlg').hide()"/>
+                            <p:commandButton value="Guadar" icon="fa fa-save" action="#{producto.guardarTipoHijo()}" oncomplete="PF('tipopDlg').hide()" process="@this" update="form:tipop"/>    
+                        </h:panelGrid>
+                    </p:dialog>
                 </p:panel>
             </div>
         </h:form>
