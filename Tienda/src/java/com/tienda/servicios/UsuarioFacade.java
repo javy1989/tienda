@@ -31,9 +31,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     }
 
     public Usuario traeUsrPwd(String usr, String pwd) {
-        Query q = em.createQuery("select u from Usuario as u where u.usuario= :usr and u.pwd= :pwd");
-        q.setParameter("usr", usr);
-        q.setParameter("pwd", pwd);
-        return (Usuario) q.getSingleResult();
+        try {
+            Query q = em.createQuery("select u from Usuario as u where u.usuario= :usr and u.pwd= :pwd");
+            q.setParameter("usr", usr);
+            q.setParameter("pwd", pwd);
+            return (Usuario) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

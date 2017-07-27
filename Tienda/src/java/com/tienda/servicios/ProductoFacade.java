@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -34,9 +35,21 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     }
 
     public List<Producto> getProductosEstado() throws ConsultarException {
-        Map parametros=new HashMap();
+        Map parametros = new HashMap();
         parametros.put(";where", "o.estado=true");
         parametros.put(";orden", "o.descripcion");
-        return  encontarParametros(parametros);
+        return encontarParametros(parametros);
+    }
+
+    public Producto getProductoCodigo(String codigo) {
+        try {
+            Query q = em.createQuery("SELECT p FROM Producto p WHERE p.codigo= :cod");
+            q.setParameter("cod", codigo);
+            q.getSingleResult();
+            return (Producto) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

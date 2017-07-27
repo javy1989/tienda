@@ -22,7 +22,7 @@
                                     <div class="EmptyBox10"></div>
                                     <p:password styleClass="Wid90" placeholder="Password" required="true" requiredMessage="Ingrese contrasenia" value="#{ingreso.pwd}"/>
                                     <div class="Separator"></div>
-                                    <p:commandButton value="Log In" icon="fa fa-unlock" styleClass="GreenButton" action="#{ingreso.login()}"/>
+                                    <p:commandButton value="Log In" icon="fa fa-unlock" styleClass="GreenButton" action="#{ingreso.login()}" update="@form"/>
                                 </div>
                             </div>
                         </div>

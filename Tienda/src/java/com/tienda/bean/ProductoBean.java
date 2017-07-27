@@ -136,7 +136,13 @@ public class ProductoBean {
         return null;
     }
 
+    public boolean codigoRepetido(String codigo) {
+        Producto p = ejbProducto.getProductoCodigo(codigo);
+        return p == null;
+    }
+
     public String guardar() {
+
         if (producto.getTipo() == null) {
             Mensajes.error("Seleccione Tipo");
             return null;
@@ -161,6 +167,10 @@ public class ProductoBean {
         try {
             String usr = seguridad.getUsuario().getUsuario();
             if (producto.getId() == null) {
+                if (codigoRepetido(producto.getCodigo())) {
+                    Mensajes.informacion("Codigo de producto ya existe");
+                    return null;
+                }
                 ejbProducto.create(producto, usr);
                 ingresarTracking(usr, ultimoTracking(producto));
             } else {
