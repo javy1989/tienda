@@ -11,6 +11,20 @@ package com.tienda.utilidades;
  */
 public enum TransaccionEnum {
     
-    I,
-    O
+    I("Ingreso"),
+    O ("Salida");
+    private String descripcion;
+
+    private TransaccionEnum(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+        
 }

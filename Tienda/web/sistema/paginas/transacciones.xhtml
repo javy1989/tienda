@@ -13,6 +13,10 @@
                         <p:calendar id="fecI" value="#{venta.fechaInicio}" pattern="yyyy-MM-dd" mask="true" />
                         <p:outputLabel for="fecH" value="Fecha Hasta:" />
                         <p:calendar id="fecH" value="#{venta.fechaFin}" pattern="yyyy-MM-dd" mask="true" />
+                        <h:outputLabel value="Tipo de Transaccion" style="font-weight: normal"/>
+                        <p:selectOneMenu id="cmbTipo" value="#{venta.transaccion}">
+                            <f:selectItems value="#{venta.tipoTransaccionItem}"/>
+                        </p:selectOneMenu>
                     </p:panelGrid>
                     <p:panelGrid columns="2">
                         <p:commandButton value="Buscar" action="#{venta.reporteVentas()}" update="@form"/>
@@ -32,7 +36,7 @@
                                  rowsPerPageTemplate="10,15,20"
                                  emptyMessage="No hay registros"
                                  rows="10">
-                        <p:column headerText="Ventas">
+                        <p:column headerText="Cantidad">
                             <h:outputText value="#{ve.ventas}"/>
                         </p:column> 
                         <p:column headerText="Tipo Producto">

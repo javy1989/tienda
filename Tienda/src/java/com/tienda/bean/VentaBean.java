@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -30,8 +31,18 @@ public class VentaBean {
     private List<Venta> ventas;
     private Date fechaInicio;
     private Date fechaFin;
+    private TransaccionEnum transaccion;
 
     public VentaBean() {
+    }
+
+    public SelectItem[] getTipoTransaccionItem() {
+        SelectItem[] valores = null;
+        int i = 0;
+        for (TransaccionEnum t : TransaccionEnum.values()) {
+            valores[i++] = new SelectItem(t, t.getDescripcion());
+        }
+        return valores;
     }
 
     public String reporteVentas() {
@@ -44,8 +55,7 @@ public class VentaBean {
             Mensajes.informacion("Fecha inicio deve ser menor a la actual");
             return null;
         }
-
-        ventas = ejbTracking.getVentasFecha(fechaInicio, fechaFin, TransaccionEnum.O);
+        ventas = ejbTracking.getVentasFecha(fechaInicio, fechaFin, transaccion);
         if (ventas.isEmpty()) {
             Mensajes.informacion("No existe reporte para mostrar con la fechas");
             return null;
@@ -75,6 +85,14 @@ public class VentaBean {
 
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+
+    public TransaccionEnum getTransaccion() {
+        return transaccion;
+    }
+
+    public void setTransaccion(TransaccionEnum transaccion) {
+        this.transaccion = transaccion;
     }
 
 }
