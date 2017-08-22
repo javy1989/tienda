@@ -10,9 +10,10 @@ package com.tienda.utilidades;
  * @author desarrollo
  */
 public enum TransaccionEnum {
-    
+
     I("Ingreso"),
-    O ("Salida");
+    O("Salida"),
+    B("Baja");
     private String descripcion;
 
     private TransaccionEnum(String descripcion) {
@@ -26,5 +27,5 @@ public enum TransaccionEnum {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-        
+
 }
