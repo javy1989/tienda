@@ -30,11 +30,12 @@
                         <p:column headerText="Stock">
                             <h:outputText value="#{producto.ultimoTracking(pro)}"/>
                         </p:column>
-                        <p:column headerText="Acciones" width="40%">
-                            <p:panelGrid layout="grid" columns="3" style="border: none;">
+                        <p:column headerText="Acciones" width="50%">
+                            <p:panelGrid layout="grid" columns="4" style="border: none;">
                                 <p:commandButton value="Salida" action="#{producto.salidaProducto(pro)}" update="@form" icon="fa fa-search-minus"/>
                                 <p:commandButton value="Ingreso" action="#{producto.ingresaProducto(pro)}" update="@form" icon="fa  fa-search-plus"/>
                                 <p:commandButton value="Editar" action="#{producto.editarProducto(pro)}" update="@form" icon="fa fa-edit"/>
+                                <p:commandButton value="Baja" action="#{producto.bajaProducto(pro)}" update="@form" icon="fa fa-minus"/>
                             </p:panelGrid>
                         </p:column> 
                     </p:dataTable>
@@ -48,28 +49,34 @@
                                     <f:selectItems value="#{producto.tipoItem}"/>
                                     <p:ajax event="change" immediate="true" update="tipop"/>
                                 </p:selectOneMenu>
-                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipomDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this"/>
+                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipomDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this" />
                                 <h:outputLabel value="Tipo Producto"/>
                                 <p:selectOneMenu id="tipop" value="#{producto.producto.tipo}">
                                     <f:selectItems value="#{producto.tipoHijoItem}"/>
                                 </p:selectOneMenu>
-                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipopDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this"/>
+                                <p:commandButton icon="fa fa-plus-circle" onclick="PF('tipopDlg').show();" oncomplete="#{producto.nuevoTipoPadre()}" process="@this" />
                             </p:panelGrid>
                             <p:panelGrid columns="2" layout="grid" style="border: none;" columnClasses="ui-grid-col-1 ui-grid-col-1">
                                 <h:outputLabel value="Descripcion" for="des"/>
-                                <p:inputText id="des" value="#{producto.producto.descripcion}" styleClass="Wid10"/>
+                                <p:inputText id="des" value="#{producto.producto.descripcion}" styleClass="Wid10">
+                                    <p:ajax update="@this" immediate="true"/>
+                                </p:inputText>
 
                                 <h:outputLabel value="Codigo" for="cod"/>
-                                <p:inputText id="cod" value="#{producto.producto.codigo}" styleClass="Wid90"/>
+                                <p:inputText id="cod" value="#{producto.producto.codigo}" styleClass="Wid90">
+                                    <p:ajax update="@this" immediate="true"/>
+                                </p:inputText>
 
-                                <h:outputLabel value="Cantidad" for="can" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
-                                <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida)}"/>
+                                <h:outputLabel value="Cantidad" for="can" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida or producto.baja)}"/>
+                                <p:spinner id="ca" value="#{producto.valor}" min="0" max="100" rendered="#{(producto.frmProductoV.nuevo)or (producto.ingreso or producto.salida or producto.baja)}">
+                                    <p:ajax update="@this" immediate="true"/>
+                                </p:spinner>
                             </p:panelGrid>
                         </h:panelGroup>
                         <p:panelGrid columns="2" layout="grid"  style="border: none;width: 50%" columnClasses="ui-grid-col-6 ui-grid-col-6" >
                             <p:commandButton value="Cancelar" action="#{producto.cambiaFormulario(1)}" update="@form" process="@this"/>
-                            <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{(producto.frmProductoV.nuevo or producto.frmProductoV.modificar) and (!producto.ingreso and !producto.salida)}"/>
-                            <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" rendered="#{producto.ingreso or producto.salida}"/>
+                            <p:commandButton value="Guardar Producto" action="#{producto.guardar()}" update="@form" rendered="#{(producto.frmProductoV.nuevo or producto.frmProductoV.modificar) and (!producto.ingreso and !producto.salida and !producto.baja)}"/>
+                            <p:commandButton value="Transaccion Mercaderia" action="#{producto.guardarTransaccion()}"  update="@form" process="@this" rendered="#{producto.ingreso or producto.salida or producto.baja}"/>
                         </p:panelGrid>
                     </div>
                     <p:dialog id="tipm" header="Tipo de Mercaderia" widgetVar="tipomDlg" resizable="false" modal="true">

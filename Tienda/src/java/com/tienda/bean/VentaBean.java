@@ -37,7 +37,8 @@ public class VentaBean {
     }
 
     public SelectItem[] getTipoTransaccionItem() {
-        SelectItem[] valores = null;
+        
+        SelectItem[] valores = new SelectItem[TransaccionEnum.values().length];
         int i = 0;
         for (TransaccionEnum t : TransaccionEnum.values()) {
             valores[i++] = new SelectItem(t, t.getDescripcion());
@@ -52,7 +53,7 @@ public class VentaBean {
             return null;
         }
         if (fechaFin.compareTo(cal.getTime()) > 0) {
-            Mensajes.informacion("Fecha inicio deve ser menor a la actual");
+            Mensajes.informacion("Fecha fin deve ser menor a la actual");
             return null;
         }
         ventas = ejbTracking.getVentasFecha(fechaInicio, fechaFin, transaccion);

@@ -60,6 +60,7 @@ public class ProductoBean {
     private int valor;
     private boolean salida;
     private boolean ingreso;
+    private boolean baja;
     private Tipo tipo;
 
     public ProductoBean() {
@@ -136,6 +137,16 @@ public class ProductoBean {
         return null;
     }
 
+    public String bajaProducto(Producto p) {
+        this.producto = p;
+        if (producto == null) {
+            return null;
+        }
+        cambiaFormulario(2);
+        baja = true;
+        return null;
+    }
+
     public boolean codigoRepetido(String codigo) {
         Producto p = ejbProducto.getProductoCodigo(codigo);
         return p == null;
@@ -198,14 +209,22 @@ public class ProductoBean {
             if (ingreso) {
                 ingresarTracking(usr, saldo);
                 ingreso = false;
-            } else {
+            } else if (salida) {
                 saldo -= valor;
                 if (saldo < 0) {
                     Mensajes.informacion("Saldo no disponible para transaccion");
                     return null;
                 }
-                salidaTracking(usr, saldo);
+                salidaTracking(usr, saldo, TransaccionEnum.O);
                 salida = false;
+            } else if (baja) {
+                saldo -= valor;
+                if (saldo < 0) {
+                    Mensajes.informacion("Saldo no disponible para transaccion");
+                    return null;
+                }
+                salidaTracking(usr, saldo, TransaccionEnum.B);
+                baja = false;
             }
             Mensajes.informacion("Transaccion exitosa");
             cambiaFormulario(1);
@@ -240,11 +259,11 @@ public class ProductoBean {
         generaLog(Tracking.class.getName(), t.toString(), usr);
     }
 
-    private void salidaTracking(String usr, int saldo) throws InsertarException {
+    private void salidaTracking(String usr, int saldo, TransaccionEnum tr) throws InsertarException {
         Tracking t = new Tracking();
         t.setFecha(Calendar.getInstance().getTime());
         t.setProducto(producto);
-        t.setTipo(TransaccionEnum.O);
+        t.setTipo(tr);
         t.setUsuario(usr);
         t.setValor(valor);
         t.setSaldo(saldo);
@@ -384,6 +403,14 @@ public class ProductoBean {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public boolean isBaja() {
+        return baja;
+    }
+
+    public void setBaja(boolean baja) {
+        this.baja = baja;
     }
 
 }
